@@ -28,8 +28,15 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "board"
+                        "associatedWith": "boardID"
                     }
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -77,18 +84,12 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "board": {
-                    "name": "board",
+                "boardID": {
+                    "name": "boardID",
                     "isArray": false,
-                    "type": {
-                        "model": "Board"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "boardID"
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "cards": {
                     "name": "cards",
@@ -101,8 +102,15 @@ export const schema = {
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "list"
+                        "associatedWith": "listID"
                     }
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
@@ -118,8 +126,7 @@ export const schema = {
                         "name": "byBoard",
                         "fields": [
                             "boardID"
-                        ],
-                        "queryField": "listsByBoard"
+                        ]
                     }
                 },
                 {
@@ -153,24 +160,25 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "list": {
-                    "name": "list",
+                "listID": {
+                    "name": "listID",
                     "isArray": false,
-                    "type": {
-                        "model": "List"
-                    },
-                    "isRequired": false,
-                    "attributes": [],
-                    "association": {
-                        "connectionType": "BELONGS_TO",
-                        "targetName": "listID"
-                    }
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
                 },
                 "content": {
                     "name": "content",
                     "isArray": false,
                     "type": "String",
                     "isRequired": true,
+                    "attributes": []
+                },
+                "owner": {
+                    "name": "owner",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
                     "attributes": []
                 }
             },
@@ -188,8 +196,7 @@ export const schema = {
                         "fields": [
                             "listID",
                             "content"
-                        ],
-                        "queryField": "cardsByList"
+                        ]
                     }
                 },
                 {
@@ -216,5 +223,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "53ad90082310342bfb43286e0c09c52c"
+    "version": "ef12bc215043215122c4f15f62b324e0"
 };

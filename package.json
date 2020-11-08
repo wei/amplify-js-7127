@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@aws-amplify/ui-react": "^0.2.24",
+    "@aws-amplify/ui-react": "^0.2.27",
     "@types/react-router-dom": "^5.1.6",
-    "aws-amplify": "^3.3.4",
+    "aws-amplify": "^3.3.7",
     "react": "^16.14.0",
     "react-beautiful-dnd": "^13.0.0",
     "react-confirm-alert": "^2.6.2",
@@ -14,7 +14,7 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
     "react-textarea-autosize": "^8.2.0",
-    "react-toastify": "^6.0.9"
+    "react-toastify": "^6.1.0"
   },
   "scripts": {
     "start": "npm run build:css && react-scripts start",

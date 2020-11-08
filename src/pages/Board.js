@@ -1,50 +1,65 @@
 import React, { useState } from "react";
-import { useParams, 
+import { useParams,
   // useHistory,
    Link } from "react-router-dom";
 // import { notificationError } from "../utils";
-import { List, DeleteBoard, CreateList, 
+import { List, DeleteBoard, CreateList,
   // Loader
  } from "../components";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
-import { List as ListModel, Board as BoardModel } from '../models'
+import { List as ListModel, Board as BoardModel, Card as CardModel } from '../models'
 import { DataStore } from '@aws-amplify/datastore'
-
-async function fetchList(boardID, setLists) {
-  const _Lists = (await DataStore.query(ListModel)).filter(list => {
-    return list.board.id === boardID
-  })
-  // const _Lists = await DataStore.query(ListModel, c => c.board({id: boardID}))
-  // // TODO
-  // if (!board.data.getBoard) {
-  //   history.push("/NotFound");
-  // }
-  console.log('todo check ', {_Lists})
-  setLists(_Lists)
-}
-async function fetchBoard(boardID, setBoard) {
-  const _Board = await DataStore.query(BoardModel, boardID)
-  setBoard(_Board)
-}
 
 const Board = () => {
   const [lists, setLists] = React.useState([])
+  const [cards, setCards] = React.useState([])
   const { id } = useParams();
   const boardID = id;
   // const history = useHistory();
   const [board, setBoard] = useState({});
 
   React.useEffect(() => {
-    fetchList(boardID, setLists)
+    async function fetchList() {
+      const _Lists = (await DataStore.query(ListModel)).filter(list => {
+        return list.boardID === boardID
+      })
+      // const _Lists = await DataStore.query(ListModel, c => c.board({id: boardID}))
+      // // TODO
+      // if (!board.data.getBoard) {
+      //   history.push("/NotFound");
+      // }
+      console.log('list check ', {_Lists})
+      setLists(_Lists)
+    }
+
+    fetchList()
     const subscription = DataStore.observe(ListModel).subscribe(fetchList)
     return () => subscription.unsubscribe()
   }, [boardID])
 
   React.useEffect(() => {
-    fetchBoard(boardID, setBoard)
+    async function fetchBoard() {
+      const _Board = await DataStore.query(BoardModel, boardID)
+      console.log('board check ', {_Board})
+      setBoard(_Board)
+    }
+
+    fetchBoard()
     const subscription = DataStore.observe(BoardModel).subscribe(fetchBoard)
     return () => subscription.unsubscribe()
   }, [boardID])
+
+  React.useEffect(() => {
+    async function fetchCards() {
+      // Consider filtering out cards not on the board.
+      const _Cards = await DataStore.query(CardModel)
+      setCards(_Cards)
+    }
+
+    fetchCards()
+    const subscription = DataStore.observe(CardModel).subscribe(fetchCards)
+    return () => subscription.unsubscribe()
+  }, [])
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -124,7 +139,7 @@ const Board = () => {
                         key={list.id}
                         title={list.title}
                         listId={list.id}
-                        cards={list.cards?.items}
+                        cards={cards.filter(c => c.listID === list.id)}
                       />
                     );
                   })}
